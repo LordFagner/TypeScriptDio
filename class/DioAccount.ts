@@ -1,8 +1,9 @@
-export abstract class Account {
+export abstract class DioAccount {
     private name: string;
     private Balance: number;
-    private accountNumber: number
+    private readonly accountNumber: number
     private credit : number 
+    private AccountActive : Boolean = true
 
     constructor(name: string, balance: number = 0.0, accountNumber: number, credit : number) {
         this.name = name;
@@ -14,18 +15,24 @@ export abstract class Account {
    
     deposit(amount: number): void {
         if (amount <= 0) {
-            throw new Error("Deposit amount must be greater than zero.");
+            throw new Error("não é possivel depositar um valor negativo");
         }
         this.Balance += amount;
     }
 
     withdraw(amount: number): void {
-        if (amount <= 0) {
-            throw new Error("Withdrawal amount must be greater than zero.");
+        
+        if(!this.AccountActive){
+            throw new Error('Conta Inativa')
         }
-        if (amount > this.Balance) {
-            throw new Error("Insufficient funds.");
+        
+        if (amount <= 0 ) {
+            throw new Error("Saque Impossivel, Sua conta Está zerada ");
         }
+        else if (amount > this.Balance) {
+            throw new Error("Insuficiente.");
+        }
+
         this.Balance -= amount;
     }
 
@@ -38,7 +45,7 @@ export abstract class Account {
   }
 
 
-public setBame(name : string) {
+public setName(name : string) {
     this.name = name;
 }
 
@@ -53,13 +60,6 @@ public getBalance() : number {
 }
 
 
-public setLoan(loan : number) {
-    this.credit = loan;
-}
-
-public getLoan() : number {
-    return this.credit
-}
 
 
 }
